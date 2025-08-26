@@ -54,7 +54,7 @@ perguntas = {
     },
     "bomba_combustivel": {
         "opcoes": {
-            "falha": "A bomba de combustível está funcionando corretamente?",
+            "falha": "A bomba esta com problema?",
         }
     },
     "filtro_ar": {
@@ -148,7 +148,6 @@ def perguntar(texto):
     # lower deixa tudo em minusculo
     resposta = input(texto + " (s/n): ").strip().lower()
     #fazemos um loop, caso a resposta do usuario não for "s" ou "n" faz a pergunta novamente
-
     while resposta not in ("s", "n"):
         resposta = input("Resposta inválida! Digite 's' ou 'n': ").strip().lower()
     return resposta == "s"
@@ -165,22 +164,21 @@ def coletar_fatos(perguntas):
 
     # loop, enquanto gouver perguntas_restantes o programa continua
     while perguntas_restantes:
-        nova_rodada = False # guarda quais perguntas foram respondidas para tirar da listsa
-        remover_chaves = []
+        nova_rodada = False 
+        remover_chaves = [] # guarda quais perguntas foram respondidas para tirar da listsa
 
         #fazemos um loop nas perguntas restantes, verificamos a chave e os dados.
 	    #chave é por exemplo bateria, e os dados é o que esta dentro de bateria                	
         #por exemplo opcoes.
-        for chave, dados in perguntas_restantes.items():
-            if "opcoes" not in dados:  #se o dado da chave não for opções significa 		
-                # que é uma pergunta direta
+        for chave, dados in perguntas_restantes.items(): #.items() retorna pares chave-valor do dicionário, em forma de tuplas.
+            if "opcoes" not in dados:  #se o dado da chave não for opções significa que é uma pergunta direta
                 
                 # aqui verificamos se a chave ja foi adicionada a alguma dessas listas, se ja significa que a pergunta ja foi feita
                 if chave not in fatos_positivos and chave not in fatos_negativos:
-                    resposta = perguntar(dados["pergunta"]) # pergunta ao usuario
-                    if resposta:
+                    resposta = perguntar(dados["pergunta"]) # pergunta ao usuario. 
+                    if resposta: # se resposta for true
                         fatos_positivos.add(chave) # se a resposta for positiva adiciona a fatos_positivos
-                    else:
+                    else: # se não
                         fatos_negativos.add(chave) # se nao adiciona a fatos_negativos
                     remover_chaves.append(chave) # e por fim adicionamos a chave a lista remover_chaves
                     nova_rodada = True
@@ -212,7 +210,14 @@ def coletar_fatos(perguntas):
     return fatos_positivos, fatos_negativos # Entrega os conjuntos com as respostas: o que o usuário confirmou e o que ele negou.
 
 # -----------------------------
-# Motor de Inferência (Forward)
+#Um motor de inferência é o mecanismo de raciocínio de um sistema especialista.
+#Ele usa uma base de fatos (o que já se sabe) e uma base de regras (SE... ENTÃO...) para aplicar lógica e chegar a novas conclusões automaticamente.
+
+# Motor de Inferência (Forward) 
+#O forward chaining (encadeamento progressivo) é uma forma de raciocínio usada por motores de inferência.
+#Ele começa dos fatos conhecidos (“o paciente tem febre e tosse”).
+#Depois, aplica as regras passo a passo para gerar novos fatos.
+#Continua até chegar a uma conclusão ou até não haver mais regras aplicáveis.
 # -----------------------------
 def motor_inferencia(fatos):
     conclusoes = [] #irá armazenar todas as hipóteses que o motor de inferência consegue deduzir.
@@ -236,6 +241,10 @@ def motor_inferencia(fatos):
 
 # -----------------------------
 # Backward Chaining
+#O backward chaining (encadeamento regressivo) é uma forma de raciocínio usada por motores de inferência.
+#Ele começa de uma meta/hipótese (“será que o paciente tem gripe?”).
+#Depois, volta para trás verificando se os fatos conhecidos e as regras sustentam essa hipótese.
+#Se as condições não forem satisfeitas, a hipótese é descartada.
 # -----------------------------
 def backward_chaining(hipotese, fatos_pos, fatos_neg, regras):
     for regra in regras: # percorre todas as regras
@@ -248,9 +257,9 @@ def backward_chaining(hipotese, fatos_pos, fatos_neg, regras):
             # cond not in fatos_neg verifica se essa condição não foi marcada como falsa.
             # and → garante que a condição só entra na lista se não estiver nem em positivos nem em negativos.
             if not faltando: # se o elemento nao estiver em faltando
-                return all(cond in fatos_pos for cond in regra["condicoes"]) # verifica se a condição que esta em fatos_pos ja foi confirmada como verdadeira
-                # faz um loop nas condições da regra para verificar se a condicao do fatos pos foi confirmada
-            for cond in faltando: # pega o elemento que esta na lista faltando e pergunta
+                return all(cond in fatos_pos for cond in regra["condicoes"]) # verifica se a condição que esta em fatos_pos ja foi confirmada como verdadeira. Essa linha verifica se todas as condições da regra estão presentes nos fatos positivos. Se todas as condições estiverem em fatos_pos → retorna True. Se faltar alguma condição → retorna False.
+            # faz um loop nas condições da regra para verificar se a condicao do fatos pos foi confirmada
+            for cond in faltando: # pega o elemento que esta na lista faltando e pergunta. 
                 resposta = perguntar(f"É verdade que {cond}?")
                 if resposta:
                     fatos_pos.add(cond)
@@ -262,6 +271,8 @@ def backward_chaining(hipotese, fatos_pos, fatos_neg, regras):
 
 # -----------------------------
 # Rede Bayesiana completa
+#Uma Rede Bayesiana é como um mapa de probabilidades que mostra como eventos estão relacionados.
+#Ela ajuda a calcular a chance de algo acontecer mesmo com informações incompletas ou incertas.
 # -----------------------------
 def rede_bayesiana(hipoteses, fatos_positivos, fatos_negativos):
     resultados = {}  # dicionário que irá armazenar as probabilidades calculadas para cada hipótese
