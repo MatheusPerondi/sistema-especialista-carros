@@ -352,7 +352,10 @@ probabilidades = rede_bayesiana(hipoteses, fatos_pos, fatos_neg)
 # Seleciona o problema mais provável
 # -----------------------------
 if probabilidades:
-    hipotese_principal = max(probabilidades, key=probabilidades.get)
+    hipotese_principal = max(probabilidades, key=probabilidades.get) # max(probabilidades, key=probabilidades.get)
+#O max vai procurar o maior valor no dicionário.
+#Mas como o dicionário guarda pares (chave → valor), ele precisa saber qual valor comparar.
+#Por isso usamos key=probabilidades.get: assim o max escolhe a chave com maior valor.
     certeza = probabilidades[hipotese_principal]
     print(f"\nProblema mais provável: {hipotese_principal} ({certeza:.2%})")
 else:
