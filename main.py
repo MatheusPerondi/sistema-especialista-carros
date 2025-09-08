@@ -346,7 +346,13 @@ for hipotese in [r["conclusao"] for r in regras]:
             explicacoes.append(f"Hipótese '{hipotese}' confirmada via backward chaining.")
 
 # 4. Probabilidades via Rede Bayesiana completa
-probabilidades = rede_bayesiana(hipoteses, fatos_pos, fatos_neg)
+probabilidades = rede_bayesiana(hipoteses, fatos_pos, fatos_neg) # A função calcula a probabilidade de cada hipótese ser verdadeira considerando os fatos fornecidos.
+# Retorna um dicionário chamado resultados dentro da função
+#{
+#    "Problema na bateria": 0.75,
+#    "Tanque vazio": 0.10,
+#    "Fusível queimado": 0.05
+#}
 
 # -----------------------------
 # Seleciona o problema mais provável
@@ -356,8 +362,10 @@ if probabilidades:
 #O max vai procurar o maior valor no dicionário.
 #Mas como o dicionário guarda pares (chave → valor), ele precisa saber qual valor comparar.
 #Por isso usamos key=probabilidades.get: assim o max escolhe a chave com maior valor.
-    certeza = probabilidades[hipotese_principal]
-    print(f"\nProblema mais provável: {hipotese_principal} ({certeza:.2%})")
+    certeza = probabilidades[hipotese_principal] #É um dicionário que contém todas as hipóteses com suas probabilidades. hipotese_principal
+#É uma chave do dicionário que representa a hipótese com maior probabilidade, encontrada assim:
+    print(f"\nProblema mais provável: {hipotese_principal} ({certeza:.2%})")  #certeza é a probabilidade e hipotese central a conclusão
+    
 else:
     print("Nenhum problema identificado.")
 
