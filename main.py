@@ -1,10 +1,3 @@
-# -----------------------------
-# Base de conhecimento
-# -----------------------------
-
-# -----------------------------
-# Base de conhecimento ampliada
-# -----------------------------
 
 # Define um dicionario, cada chave é um topico exemplo "bateria, carro_nao_liga"
 # Se existir "opções", o tópico tem subperguntas: "descarregada", "ok".
@@ -153,11 +146,6 @@ hipoteses = {
     "Filtro de ar sujo": {"P(H)": 0.05, "P(filtro_ar_sujo|H)": 0.95},
     "Sensor do motor indicando falha": {"P(H)": 0.05, "P(sensor_motor_alerta|H)": 0.95}
 }
-
-# -----------------------------
-# As funções e execução permanecem as mesmas
-# -----------------------------
-# (coletar_fatos, motor_inferencia, backward_chaining, rede_bayesiana, etc.)
 
 # -----------------------------
 # Funções utilitárias
