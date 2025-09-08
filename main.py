@@ -9,6 +9,14 @@
 # Define um dicionario, cada chave é um topico exemplo "bateria, carro_nao_liga"
 # Se existir "opções", o tópico tem subperguntas: "descarregada", "ok".
 # Se não houver opções a pergunta é direta
+
+#perguntas é um dicionário em Python.
+
+#cada chave (ex.: "bateria", "carro_nao_liga", "tanque") representa um sintoma ou componente do carro.
+#O valor associado a cada chave pode ser:
+#Outro dicionário com "opcoes" → quando existem diferentes alternativas para a mesma pergunta (ex.: bateria pode estar descarregada ou ok).
+#Um dicionário com "pergunta" → quando a pergunta é direta (ex.: "O carro não liga?").
+
 perguntas = {
     "bateria": {
         "opcoes": {
@@ -87,6 +95,12 @@ perguntas = {
 # Define regras
 # "condições" fatos que devem ser verdadeiros para que a regra se aplique.
 # Ex: se a bateria_descarregada e carro_nao_liga forem verdadeiros a conclusao sera problema na bateria.
+
+#regras é uma lista de dicionários em Python.
+#cada elemento da lista é uma regra representada por um dicionário.
+#Dentro de cada regra:
+#"condicoes" → é uma lista de sintomas ou evidências necessárias.
+#"conclusao" → é a hipótese ou diagnóstico associado quando as condições são satisfeitas.
 regras = [
     {"condicoes": ["bateria_descarregada", "carro_nao_liga"], "conclusao": "Problema na bateria"},
     {"condicoes": ["luz_painel"], "conclusao": "Verificar sistema elétrico"},
@@ -119,6 +133,11 @@ regras = [
 
 # P(luz_painel|H) → mesma ideia, mas para outro sintoma.
 # Ex: se o problema for a bateria, a luz do painel quase nunca fica acesa (só em 20% dos casos).
+
+#hipoteses é um dicionário em Python.
+#As chaves são as hipóteses (ex.: "Problema na bateria", "Verificar sistema elétrico").
+#Os valores são outros dicionários, que guardam as probabilidades associadas a cada hipótese (probabilidade a priori e as condicionais).
+#Ou seja, é um dicionário de dicionários.
 
 hipoteses = {
     "Problema na bateria": {"P(H)": 0.3, "P(carro_nao_liga|H)": 0.9, "P(luz_painel|H)": 0.2, "P(bateria_descarregada|H)": 0.95},
@@ -219,6 +238,11 @@ def coletar_fatos(perguntas):
 #Depois, aplica as regras passo a passo para gerar novos fatos.
 #Continua até chegar a uma conclusão ou até não haver mais regras aplicáveis.
 # -----------------------------
+
+# Um motor de inferência é o componente de um sistema 
+# especialista que usa regras e fatos para tirar conclusões automaticamente. 
+# Ele funciona como o “raciocínio” do sistema, aplicando regras lógicas para analisar 
+# informações conhecidas e chegar a novas deduções ou decisões.
 def motor_inferencia(fatos):
     conclusoes = [] #irá armazenar todas as hipóteses que o motor de inferência consegue deduzir.
     explicacoes = [] #irá armazenar uma explicação para cada conclusão, mostrando os fatos que levaram a ela.
@@ -274,6 +298,11 @@ def backward_chaining(hipotese, fatos_pos, fatos_neg, regras):
 #Uma Rede Bayesiana é como um mapa de probabilidades que mostra como eventos estão relacionados.
 #Ela ajuda a calcular a chance de algo acontecer mesmo com informações incompletas ou incertas.
 # -----------------------------
+
+#Uma rede bayesiana é um modelo probabilístico que representa variáveis e as relações de dependência 
+# entre elas por meio de um grafo. Ela funciona calculando probabilidades condicionais: 
+# dado um conjunto de evidências (fatos conhecidos), a rede atualiza as chances de diferentes hipóteses serem verdadeiras, ]
+# ajudando na tomada de decisões sob incerteza.
 def rede_bayesiana(hipoteses, fatos_positivos, fatos_negativos):
     resultados = {}  # dicionário que irá armazenar as probabilidades calculadas para cada hipótese
 
